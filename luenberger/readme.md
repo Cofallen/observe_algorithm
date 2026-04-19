@@ -52,4 +52,4 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-Note: In your implementation the correction term for $\hat{x} $is multiplied by an extra $\Delta t $compared to the standard discrete observer form. That is equivalent to scaling $L_1$ by $\Delta t$ if you prefer the conventional expression.
+Note: In your implementation the correction term for $\hat{x}$ is multiplied by an extra $\Delta t $ compared to the standard discrete observer form. That is equivalent to scaling $L_1$ by $\Delta t$ if you prefer the conventional expression.
