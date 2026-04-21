@@ -39,10 +39,10 @@ while True:
     x = float(data.decode().strip())
 
     # ---------------- SMC observer ----------------
-    e = x_hat - x
+    e = x - x_hat
 
-    x_hat += dt * (v_hat - k1 * math.sqrt(abs(e)) * sign(e))
-    v_hat += dt * (-k2 * sign(e))
+    x_hat += dt * (v_hat + k1 * math.sqrt(abs(e)) * sign(e))
+    v_hat += dt * (k2 * sign(e))
 
     # output
     msg = f"{x},{v_hat}\n"
