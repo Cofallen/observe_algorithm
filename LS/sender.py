@@ -20,7 +20,8 @@ y_k1, y_k2 = 0.0, 0.0
 u_k1, u_k2 = 0.0, 0.0
 
 while True:
-    u = np.sin(2*np.pi*0.5*t) + 0.5*np.sin(2*np.pi*10.0*t)
+    # u = np.sin(2*np.pi*0.5*t) 
+    u = np.sin(2*np.pi*0.5*t) 
 
     y = a1 * y_k1 + a2 * y_k2 + b1 * u_k1 + b2 * u_k2
     y += 0.05 * np.random.randn()
