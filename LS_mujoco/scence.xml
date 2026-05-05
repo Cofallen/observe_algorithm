@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mujoco>
+<compiler meshdir="assets"/>
+  <asset>
+    <mesh file="assem5___part473_1.stl"/>
+    <mesh file="assem5___part474_1.stl"/>
+    <mesh file="assem5___base_1.stl"/>
+    <texture name="plane" type="2d" builtin="checker" rgb1=".1 .1 .1" rgb2=".9 .9 .9" width="512" height="512"/>
+    <material name="plane" texture="plane" reflectance=".3" texrepeat="1 1" texuniform="true"/>
+  </asset>
+
+  <default>
+  <default class="base_default">
+  <!-- <geom contype="0" conaffinity="0"/> -->
+  </default>
+  <default class="Part473_default">
+  <!-- <geom contype="0" conaffinity="0"/> -->
+  </default>
+  <default class="Part474_default">
+  <!-- <geom contype="0" conaffinity="0"/> -->
+  </default>
+  <joint damping="0.1"/>
+  </default>
+
+  <worldbody>
+  <geom name="floor" pos="0 0 0" size="0 0 .25" type="plane" material="plane"/>
+  <light directional="true" ambient=".3 .3 .3" pos="30 30 30" dir="0 -.5 -1" diffuse=".5 .5 .5" specular=".5 .5 .5"/>
+  <body name="base_body" pos="0 0 0">
+    <freejoint/>
+    <geom type="mesh" mesh="assem5___base_1" mass="10.0000" class="base_default"/>
+
+    <body name="Part473_body" pos="0.0 0 0.07">
+      <joint name="joint1" type="hinge" axis="0 0 1"/>
+      <geom type="mesh" mesh="assem5___part473_1" mass="2.000" class="Part473_default"/>
+
+      <body name="Part474_body" pos="0.05482 0.00445   00">
+        <joint name="joint2" type="hinge" axis="1 0 0"/>
+        <geom type="mesh" mesh="assem5___part474_1" mass="2.000" class="Part474_default"/>
+      </body>
+
+    </body>   
+
+  </body>
+  </worldbody>
+
+  <actuator>
+    <motor joint="joint1" name="m1" ctrlrange="-10 10"/>
+    <!-- <motor joint="joint2" name="m2" ctrlrange="-10 10"/> -->
+    <position joint="joint2" name="m2" kp="5" ctrlrange="-10 10"/>
+  </actuator>
+
+  <sensor>
+    <jointpos joint="joint1" name="joint1_pos"/>
+    <jointpos joint="joint2" name="joint2_pos"/>
+    <jointvel joint="joint1" name="joint1_vel"/>
+    <jointvel joint="joint2" name="joint2_vel"/>
+  </sensor>
+</mujoco>
