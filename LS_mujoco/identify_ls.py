@@ -22,14 +22,15 @@ with mujoco.viewer.launch_passive(system.model, system.data) as viewer:
         start = time.time()
         mujoco.mj_step(system.model, system.data)
 
-        u = 0.3 * np.sin(2*np.pi*0.5*t) 
+        # u = 0.3 * np.sin(2*np.pi*0.5*t) 
+        u = 0.3 if t >= 2 else 0.0
         system.set_actuator("m1", u)
 
         joint_data = system.read_data()
         y = joint_data["joint1"][0]
 
         vofa.send_command(u, y)
-
+        print(u, y)
         phi = np.array([[y_k1],
                     [y_k2],
                     [u_k1],
@@ -47,7 +48,7 @@ with mujoco.viewer.launch_passive(system.model, system.data) as viewer:
         u_k2 = u_k1
         u_k1 = u
 
-        print(theta.flatten())
+        # print(theta.flatten())
 
 
         t += dt
