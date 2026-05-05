@@ -16,38 +16,18 @@ P = np.eye(4) * 1000  # P
 
 y_k1, y_k2 = 0.0, 0.0
 u_k1, u_k2 = 0.0, 0.0
-# [ 1.38650793 -0.38650716 -0.58701908  0.59800539]
 
-# ===== 目标 =====
-y_ref = 6.0   # 目标位置（自己改）
-v_ref = 1.0   # 目标速度（一般为0）
-u=0
 with mujoco.viewer.launch_passive(system.model, system.data) as viewer:
     while viewer.is_running():
         start = time.time()
         mujoco.mj_step(system.model, system.data)
 
-        # u = 0.3 * np.sin(2*np.pi*0.5*t) 
+        u = 0.3 * np.sin(2*np.pi*0.5*t) 
         # u = 0.3 if t >= 2 else 0.0
+        system.set_actuator("m1", u)
 
         joint_data = system.read_data()
         y = joint_data["joint1"][0]
-
-                # ===== 构造状态 =====
-        # y_ref += v_ref * dt
-        e1 = joint_data["joint1"][0] - y_ref
-        e2 = joint_data["joint1"][1]
-        e3 = u
-        x = np.array([
-            [e1],
-            [-e2],
-            [e3]
-        ])
-        K = np.array([[1.90375591, -0.56799468, -0.86265858]])
-        u = -K @ x
-        u = float(u)
-        system.set_actuator("m1", u)
-        # ===== 构造状态 =====
 
         vofa.send_command(u, y)
         # print(u, y)
