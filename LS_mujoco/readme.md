@@ -9,57 +9,10 @@
 - 驱动：电机 m1 作用于 joint1，力矩/位置控制；m2 作用于 joint2（本次实验保持锁定或不受力）。
 - 传感器：记录 joint1 的位置（角度）和速度。
 
-## 系统模型
-从电机 m1 输入力矩 $\tau$ 到 joint1 输出角度 $\theta$ 的动态可以近似为一个二阶线性系统（忽略弹性）：
+## LQR control
 
-\[
-\frac{\Theta(s)}{T(s)} = \frac{1}{J s^2 + B s}
-\]
+NOTE: I use `u = 0.3 * np.sin(2*np.pi*0.5*t) ` to identify this gimbal system, get param. Though use 3 state function to LQR control, the control is stable. But the corresponding time is too long.
 
-- $J$：折算到 joint1 轴的等效转动惯量（kg·m²）
-- $B$：粘性阻尼系数（N·m·s/rad）
-- 模型中 `<joint damping="0.1"/>` 给出了先验阻尼值 $B=0.1$
+So, I use chrip frenquency signal to identify this system, get these param, only has `a1 a2`, `b1 b2` is nearly 1e-3. Which causes LQR Ricatti Equation has not been successfully solved. I simple this system, change it inito 2 state function, but the param matrix `A B Q R` is choosed difficultly. If Q or R is big, this function is not solved. Even the two rank is controlled.
 
-## 辨识方法
-### 正弦信号输入输出
-对 m1 施加正弦型力矩指令（或位置指令，使系统工作在速度模式亦可）：
-\[
-\tau(t) = A \sin(\omega t)
-\]
-
-在系统达到稳态后，关节角度输出也呈现同频率的正弦波（线性系统特性）：
-\[
-\theta(t) = M \sin(\omega t + \phi)
-\]
-
-分别测量不同频率 $\omega_i$ 下的 **幅值比** $|G(j\omega_i)| = M_i/A$ 和 **相位差** $\phi_i$，得到系统的频率响应数据。
-
-### 频率响应拟合
-将实测频率响应与模型传递函数
-
-\[
-G(s) = \frac{1}{J s^2 + B s},\qquad G(j\omega) = \frac{1}{-J \omega^2 + j B \omega}
-\]
-
-的幅相特性拟合，通过优化算法（如最小二乘）求出 $J$ 和 $B$ 的最佳估计。
-
-也可以利用幅频特性的低频渐近线：当 $\omega \to 0$ 时，$|G(j\omega)| \approx \frac{1}{B\omega}$，先拟合 $B$，再结合高频段数据求 $J$。
-
-## 实验步骤
-1. **准备仿真**：加载提供的 `model.xml`，确保 joint2 固定（m2 不动作或保持零位）。
-2. **频率点选取**：在对数尺度上选择 10~20 个频率点，范围例如 0.1 Hz ~ 50 Hz，覆盖系统带宽。
-3. **施加激励**：
-   - 使用 MuJoCo 的 `mj_forward` 和控制器，编写循环向 `m1` 施加正弦力 $\tau = A \sin(2\pi f t)$。
-   - 幅值 $A$ 选择足够大以获得明显角度变化，但不超过关节限位。
-4. **数据记录**：等待瞬态衰减（至少 5 倍时间常数），对每个频率记录稳态的关节角度和力矩数据（至少 5~10 个完整周期）。
-5. **信号处理**：
-   - 对稳态段数据进行正弦拟合（如最小二乘正弦拟合）得到幅值和相位。
-   - 计算频率响应 $|G| = \frac{\text{角度幅值}}{\text{力矩幅值}}$，$\angle G = \phi_\theta - \phi_\tau$。
-6. **参数辨识**：使用 MATLAB 的 `tfest` 或 Python `scipy.optimize.curve_fit` 拟合传递函数系数，得到 $J, B$。
-
-## 预期结果
-基于模型几何信息与默认阻尼，预期：
-- **阻尼系数** $B \approx 0.1$ （与 `<joint damping="0.1"/>` 一致）
-- **等效转动惯量** $J \approx 0.006 \sim 0.01$ kg·m²（主要来自 Part474 对 joint1 Z 轴的偏移）
-
-实测频率响应将在低频段呈现积分特性（-20dB/dec 斜率），高频段呈现二阶积分特性（-40dB/dec），相位在 0.1Hz 附近接近 -90° 并逐渐向 -180° 过渡。
+Maybe there are some IMPORTANT THINGS I HAVE NOT DISCOVERD. But for now, PID is better than LQR or other algorithm, if your system is not good by identified or computed.
