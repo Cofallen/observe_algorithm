@@ -1,14 +1,5 @@
 # 双关节机械臂系统辨识实验
 
-## 实验目的
-通过正弦信号激励，辨识 MuJoCo 模型中电机 m1（驱动 joint1）的等效转动惯量 `J` 和粘性阻尼系数 `B`。
-
-## 系统概述
-- 仿真环境：MuJoCo
-- 机械结构：基部固定（base_body），上装配 Part473_body（绕 Z 轴铰链 joint1），Part474_body 安装在 Part473 上（绕 X 轴铰链 joint2）。
-- 驱动：电机 m1 作用于 joint1，力矩/位置控制；m2 作用于 joint2（本次实验保持锁定或不受力）。
-- 传感器：记录 joint1 的位置（角度）和速度。
-
 ## LQR control
 
 NOTE: I use `u = 0.3 * np.sin(2*np.pi*0.5*t) ` to identify this gimbal system, get param. Though use 3 state function to LQR control, the control is stable. But the corresponding time is too long.
@@ -42,3 +33,9 @@ Otherwise, PID wins simply because it does not rely on an explicit model of the 
 Therefore, my earlier statement “LQR must sacrifice speed for stability” is **wrong in general, but true under my specific mistake**: using an overly wide‑band identification without considering the system’s physical bandwidth. If I re‑identify using a chirp that stops at 2 rad/s (or post‑process the data to give zero weight to frequencies above 2 rad/s), the b coefficients return to a reasonable magnitude, and LQR can once again be designed for fast response – as long as I do not ask for tracking beyond 2 rad/s.  
 
 For now, I will stick with PID because it works. But I now know when and how to make LQR work: **match the identification band to the control band, and never fight physics**.
+
+## RUN
+
+```bash
+python identify_ls.py  # one shell
+```
