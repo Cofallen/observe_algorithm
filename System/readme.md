@@ -4,7 +4,9 @@
 
 ## 连续系统
 
-$$ \begin{cases} \dot{\mathbf{x}}(t) = A(t) \mathbf{x}(t) + B(t) \mathbf{u}(t) + \mathbf{e}(t) \\ \mathbf{y}(t) = C \mathbf{x}(t) + D \mathbf{u}(t) + \mathbf{v}(t) \end{cases} $$
+$$ 
+\begin{cases} \dot{\mathbf{x}}(t) = A(t) \mathbf{x}(t) + B(t) \mathbf{u}(t) + \mathbf{e}(t) \\ \mathbf{y}(t) = C \mathbf{x}(t) + D \mathbf{u}(t) + \mathbf{v}(t) \end{cases} 
+$$
 
 - $\mathbf{x}$：状态向量
 - $\mathbf{u}$：输入向量
@@ -13,21 +15,29 @@ $$ \begin{cases} \dot{\mathbf{x}}(t) = A(t) \mathbf{x}(t) + B(t) \mathbf{u}(t) +
 
 ## 离散系统
 
-$$ \begin{cases} \mathbf{x}(k+1) = A \mathbf{x}(k) + B \mathbf{u}(k) \\ \mathbf{y}(k) = C \mathbf{x}(k) + D \mathbf{u}(k) \end{cases} $$
+$$ 
+\begin{cases} \mathbf{x}(k+1) = A \mathbf{x}(k) + B \mathbf{u}(k) \\ \mathbf{y}(k) = C \mathbf{x}(k) + D \mathbf{u}(k) \end{cases} 
+$$
 
 传递函数矩阵：
 
-$$ G(z) = C (zI - A)^{-1} B + D $$
+$$ 
+G(z) = C (zI - A)^{-1} B + D 
+$$
 
 ## 从 ARX 到状态空间
 
 给定 ARX 模型：
 
-$$ y(t) + a_1 y(t-1) + \cdots + a_n y(t-n) = b_1 u(t-1) + \cdots + b_n u(t-n) + e(t) $$
+$$ 
+y(t) + a_1 y(t-1) + \cdots + a_n y(t-n) = b_1 u(t-1) + \cdots + b_n u(t-n) + e(t) 
+$$
 
 可定义状态为：
 
-$$ x_1(t) = y(t-n), \quad x_2(t) = y(t-n+1), \dots, x_n(t) = y(t-1) $$
+$$
+x_1(t) = y(t-n), \quad x_2(t) = y(t-n+1), \dots, x_n(t) = y(t-1) 
+$$
 
 即可写出可控标准型状态空间表示。
 
@@ -38,11 +48,15 @@ $$ x_1(t) = y(t-n), \quad x_2(t) = y(t-n+1), \dots, x_n(t) = y(t-1) $$
 
 ## 模型方程
 
-$$ y(t) = \sum_{i=1}^{n} a_i y(t-i) + \sum_{i=1}^{n} b_i u(t-i) + e(t) $$
+$$ 
+y(t) = \sum_{i=1}^{n} a_i y(t-i) + \sum_{i=1}^{n} b_i u(t-i) + e(t) 
+$$
 
 更常见的写法：
 
-$$ y(t) + a_1 y(t-1) + \cdots + a_n y(t-n) = b_1 u(t-1) + \cdots + b_n u(t-n) + e(t) $$
+$$ 
+y(t) + a_1 y(t-1) + \cdots + a_n y(t-n) = b_1 u(t-1) + \cdots + b_n u(t-n) + e(t) 
+$$
 
 ## 特点
 
@@ -54,12 +68,19 @@ $$ y(t) + a_1 y(t-1) + \cdots + a_n y(t-n) = b_1 u(t-1) + \cdots + b_n u(t-n) + 
 
 使用延迟算子 $q^{-1}$：
 
-$$ A(q^{-1}) y(t) = B(q^{-1}) u(t) + e(t) $$
+$$ 
+A(q^{-1}) y(t) = B(q^{-1}) u(t) + e(t) 
+$$
 
 其中：
 
-$$ A(q^{-1}) = 1 + a_1 q^{-1} + \cdots + a_n q^{-n} $$
-$$ B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} $$
+$$ 
+A(q^{-1}) = 1 + a_1 q^{-1} + \cdots + a_n q^{-n} 
+$$
+
+$$ 
+B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} 
+$$
 
 # 输出误差模型 (Output Error Model, O-E 或 D-E)
 
@@ -67,12 +88,18 @@ $$ B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} $$
 
 ## 模型定义
 
-$$ y(t) = \frac{B(q^{-1})}{F(q^{-1})} u(t) + e(t) $$
+$$ 
+y(t) = \frac{B(q^{-1})}{F(q^{-1})} u(t) + e(t) 
+$$
 
 其中：
 
-$$ F(q^{-1}) = 1 + f_1 q^{-1} + \cdots + f_n q^{-n} $$
-$$ B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} $$
+$$ 
+F(q^{-1}) = 1 + f_1 q^{-1} + \cdots + f_n q^{-n} 
+$$
+$$ 
+B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} 
+$$
 
 ## 与 ARX 的区别
 
@@ -83,4 +110,6 @@ $$ B(q^{-1}) = b_1 q^{-1} + \cdots + b_n q^{-n} $$
 
 ## 连续时间对应（表达为微分算子）
 
-$$ y(t) = \frac{B(p)}{F(p)} u(t) + e(t), \quad F(p) = 1 + \sum_{i=1}^{n} q_i p^i $$
+$$ 
+y(t) = \frac{B(p)}{F(p)} u(t) + e(t), \quad F(p) = 1 + \sum_{i=1}^{n} q_i p^i 
+$$
