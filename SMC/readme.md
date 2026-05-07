@@ -6,19 +6,29 @@
 
 对于系统 $\dot{x} = v + u$（其中 $v$ 为未知项），观测器结构：
 
-$$ \dot{\hat{x}} = u + k_1 |s|^{1/2} \text{sign}(s) $$
+$$ 
+\dot{\hat{x}} = u + k_1 |s|^{1/2} \text{sign}(s)
+ $$
 
-$$ \dot{u} = k_2 \text{sign}(s) $$
+$$ 
+\dot{u} = k_2 \text{sign}(s) 
+$$
 
 其中滑模面 $s = x - \hat{x}$。
 
 ## 离散实现（近似）
 
-$$ s_k = x_k - \hat{x}_k $$
+$$ 
+s_k = x_k - \hat{x}_k 
+$$
 
-$$ \hat{x}_{k+1} = \hat{x}_k + T_s \left( u_k + k_1 |s_k|^{1/2} \text{sign}(s_k) \right) $$
+$$ 
+\hat{x}_{k+1} = \hat{x}_k + T_s \left( u_k + k_1 |s_k|^{1/2} \text{sign}(s_k) \right)
+ $$
 
-$$ u_{k+1} = u_k + T_s \cdot k_2 \text{sign}(s_k) $$
+$$ 
+u_{k+1} = u_k + T_s \cdot k_2 \text{sign}(s_k) 
+$$
 
 ## 参数设计与 Lyapunov 稳定
 

@@ -6,11 +6,15 @@
 
 考虑 ARX 模型：
 
-$$ y(k) + a_1 y(k-1) + \cdots + a_n y(k-n) = b_1 u(k-1) + \cdots + b_n u(k-n) + e(k) $$
+$$ 
+y(k) + a_1 y(k-1) + \cdots + a_n y(k-n) = b_1 u(k-1) + \cdots + b_n u(k-n) + e(k) 
+$$
 
 其中 $e(k)$ 为白噪声（方程误差）。也可写为：
 
-$$ y(k) = \boldsymbol{\varphi}^T(k) \boldsymbol{\theta} + e(k) $$
+$$ 
+y(k) = \boldsymbol{\varphi}^T(k) \boldsymbol{\theta} + e(k) 
+$$
 
 - 回归向量 $\boldsymbol{\varphi}(k) = [-y(k-1), \dots, -y(k-n), u(k-1), \dots, u(k-n)]^T$
 - 参数向量 $\boldsymbol{\theta} = [a_1, \dots, a_n, b_1, \dots, b_n]^T$
@@ -19,16 +23,22 @@ $$ y(k) = \boldsymbol{\varphi}^T(k) \boldsymbol{\theta} + e(k) $$
 
 采集 $N$ 组数据（$N > 2n$），构造：
 
-$$ \mathbf{Y} = \Phi \boldsymbol{\theta} + \mathbf{E} $$
+$$ 
+\mathbf{Y} = \Phi \boldsymbol{\theta} + \mathbf{E} 
+$$
 
 其中：
 
-$$ \mathbf{Y} = \begin{bmatrix} y(1) \\ y(2) \\ \vdots \\ y(N) \end{bmatrix}, \quad 
-\Phi = \begin{bmatrix} \boldsymbol{\varphi}^T(1) \\ \boldsymbol{\varphi}^T(2) \\ \vdots \\ \boldsymbol{\varphi}^T(N) \end{bmatrix} $$
+$$ 
+\mathbf{Y} = \begin{bmatrix} y(1) \\ y(2) \\ \vdots \\ y(N) \end{bmatrix}, \quad 
+\Phi = \begin{bmatrix} \boldsymbol{\varphi}^T(1) \\ \boldsymbol{\varphi}^T(2) \\ \vdots \\ \boldsymbol{\varphi}^T(N) \end{bmatrix} 
+$$
 
 **最小二乘解**：
 
-$$ \hat{\boldsymbol{\theta}} = (\Phi^T \Phi)^{-1} \Phi^T \mathbf{Y} $$
+$$ 
+\hat{\boldsymbol{\theta}} = (\Phi^T \Phi)^{-1} \Phi^T \mathbf{Y} 
+$$
 
 ### 适用条件
 
@@ -41,21 +51,31 @@ $$ \hat{\boldsymbol{\theta}} = (\Phi^T \Phi)^{-1} \Phi^T \mathbf{Y} $$
 
 **初始化**：
 
-$$ \hat{\boldsymbol{\theta}}(0) = \mathbf{0}, \quad P(0) = \alpha I \quad (\alpha \text{大数，如 } 10^4) $$
+$$ 
+\hat{\boldsymbol{\theta}}(0) = \mathbf{0}, \quad P(0) = \alpha I \quad (\alpha \text{大数，如 } 10^4) 
+$$
 
 **每一步 $k$ 更新**：
 
 1. 计算预测误差
-   $$ \varepsilon(k) = y(k) - \boldsymbol{\varphi}^T(k) \hat{\boldsymbol{\theta}}(k-1) $$
+   $$ 
+   \varepsilon(k) = y(k) - \boldsymbol{\varphi}^T(k) \hat{\boldsymbol{\theta}}(k-1) 
+   $$
 
 2. 计算增益向量
-   $$ L(k) = \frac{P(k-1) \boldsymbol{\varphi}(k)}{ \lambda + \boldsymbol{\varphi}^T(k) P(k-1) \boldsymbol{\varphi}(k) } $$
+   $$ 
+   L(k) = \frac{P(k-1) \boldsymbol{\varphi}(k)}{ \lambda + \boldsymbol{\varphi}^T(k) P(k-1) \boldsymbol{\varphi}(k) } 
+   $$
 
 3. 更新参数估计
-   $$ \hat{\boldsymbol{\theta}}(k) = \hat{\boldsymbol{\theta}}(k-1) + L(k) \varepsilon(k) $$
+   $$ 
+   \hat{\boldsymbol{\theta}}(k) = \hat{\boldsymbol{\theta}}(k-1) + L(k) \varepsilon(k) 
+   $$
 
 4. 更新协方差矩阵
-   $$ P(k) = \frac{1}{\lambda} \left[ I - L(k) \boldsymbol{\varphi}^T(k) \right] P(k-1) $$
+   $$ 
+   P(k) = \frac{1}{\lambda} \left[ I - L(k) \boldsymbol{\varphi}^T(k) \right] P(k-1) 
+   $$
 
 其中 $\lambda$ 为遗忘因子（$0.95 \le \lambda \le 1$）。$\lambda = 1$ 时无遗忘（定常系统）；$\lambda < 1$ 用于时变系统。
 
